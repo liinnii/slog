@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Слог и ударение. Диагностический диктант</title>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@600;800&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--icy:#AED5F5;--azure:#367ADF;--sky:#4FACE5;--french:#394988;--char:#353A4C;--pale:#EEF6FD;--ok:#2E9E6B;--bad:#D9534F;
+color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:#fff;color:var(--char);font:400 18px/1.6 Nunito,system-ui,sans-serif}
+h1,h2,h3{font-family:Alegreya,Georgia,serif;margin:0;line-height:1.15}
+main{max-width:860px;margin:0 auto;padding:28px 18px 60px}
+.star{width:1em;height:1em;flex:none}
+header{text-align:center;padding:30px 0 10px}
+h1{font-size:clamp(34px,7vw,56px);color:var(--french);font-weight:800}
+.sub{color:var(--azure);font-weight:600;margin-top:10px}
+section{margin-top:54px}
+h2{font-size:clamp(28px,5vw,38px);color:var(--french);display:flex;gap:12px;align-items:center;font-weight:800}
+h2 .star{color:var(--sky);width:.8em;height:.8em}
+.lead{color:#59627a;margin:8px 0 22px}
+/* plan rows */
+.row{display:flex;gap:10px;margin-bottom:10px}
+.tile{width:84px;flex:none;border-radius:18px;display:grid;place-items:center;font-size:36px}
+.bar{flex:1;border-radius:18px;padding:14px 20px}
+.bar h3{font-size:24px}
+.bar p{margin:2px 0 0;font-size:16px}
+.r1 .tile,.r1 .bar{background:var(--icy)}.r1 .tile{color:var(--azure)}.r1 h3{color:var(--azure)}
+.r2 .tile,.r2 .bar{background:var(--azure)}.r2 .tile{color:var(--char)}.r2 .bar{color:#fff}.r2 h3{color:#fff}
+.r3 .tile,.r3 .bar{background:var(--sky)}.r3 .tile{color:var(--char)}.r3 .bar{color:#0f2236}.r3 h3{color:#0f2236}
+.r4 .tile,.r4 .bar{background:var(--french)}.r4 .tile{color:var(--icy)}.r4 .bar{color:#E6EEFA}.r4 h3{color:var(--icy)}
+.r5 .tile,.r5 .bar{background:var(--char)}.r5 .tile{color:var(--sky)}.r5 .bar{color:#E3E8F2}.r5 h3{color:var(--sky)}
+/* cards */
+.card{background:var(--pale);border:2px solid var(--icy);border-radius:22px;padding:20px 22px;margin:14px 0}
+.card h3{font-size:24px;color:var(--french);margin-bottom:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.vow{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.v{background:var(--azure);color:#fff;font:800 24px Alegreya,serif;width:46px;height:46px;border-radius:14px;display:grid;place-items:center}
+.cons{background:#fff;color:var(--char);border:2px solid var(--icy)}
+.word{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0}
+.syl{border:2px solid var(--sky);background:#fff;border-radius:14px;padding:4px 12px;font:800 28px Alegreya,serif;color:var(--french)}
+.syl b{color:var(--azure);background:var(--icy);border-radius:6px;padding:0 3px}
+.note{background:#fff;border-left:6px solid var(--sky);border-radius:0 14px 14px 0;padding:10px 16px;margin:12px 0}
+/* trainers */
+.trainer{background:#fff;border:2px solid var(--azure);border-radius:24px;padding:22px;text-align:center;margin:18px 0}
+.trainer .tag{color:var(--azure);font-weight:800;margin-bottom:6px}
+.big{font:800 clamp(38px,9vw,60px) Alegreya,serif;color:var(--french);letter-spacing:2px}
+.big span.l{display:inline-block;transition:.15s}
+.big span.vv{cursor:pointer;color:var(--azure);border-bottom:4px solid var(--icy);border-radius:6px}
+.big span.vv:hover{background:var(--icy)}
+.big span.vv.good{color:#fff;background:var(--ok);border-color:var(--ok)}
+.big span.vv.no{background:#FBE0DF;color:var(--bad)}
+.btns{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:14px 0}
+button{font:800 20px Nunito,sans-serif;border:0;border-radius:16px;padding:12px 22px;background:var(--azure);color:#fff;cursor:pointer;min-width:56px}
+button:hover{background:var(--french)}
+button.alt{background:var(--icy);color:var(--french)}
+button:focus-visible,summary:focus-visible{outline:3px solid var(--french);outline-offset:2px}
+.msg{min-height:30px;font-weight:800}
+.msg.ok{color:var(--ok)}.msg.bad{color:var(--bad)}
+.score{color:#59627a;font-weight:600}
+.pairs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.pair{background:#fff;border:2px solid var(--icy);border-radius:18px;padding:12px;text-align:center}
+.pair .w{font:800 30px Alegreya,serif;color:var(--french)}
+.pair small{color:#59627a}
+.u{color:var(--azure);text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:5px}
+ul.clean{list-style:none;padding:0;margin:8px 0}
+ul.clean li{padding:6px 0 6px 34px;position:relative}
+ul.clean li::before{content:"✦";position:absolute;left:4px;color:var(--sky)}
+/* dictation */
+details{background:var(--pale);border:2px solid var(--icy);border-radius:20px;padding:6px 20px;margin:14px 0}
+summary{cursor:pointer;font:800 22px Alegreya,serif;color:var(--french);padding:10px 0}
+.dict p{margin:10px 0;padding:8px 14px;background:#fff;border-radius:12px;border:1px solid var(--icy)}
+.dict em{font-style:normal;color:var(--azure);font-weight:800}
+.calc{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.num{font:800 56px Alegreya,serif;color:var(--french);min-width:70px;text-align:center}
+.grade{font:800 28px Alegreya,serif;color:#fff;background:var(--azure);border-radius:16px;padding:8px 22px}
+.check label{display:flex;gap:12px;align-items:flex-start;padding:7px 0;cursor:pointer}
+.check input{width:22px;height:22px;accent-color:var(--azure);margin-top:4px;flex:none}
+footer{margin-top:50px;border-radius:18px;background:var(--pale);color:var(--azure);text-align:center;padding:14px;font-weight:700}
+@media(max-width:520px){.tile{width:62px;font-size:28px}.bar{padding:12px 14px}}
+.opt{font:800 26px Alegreya,serif;padding:12px 24px}
+.st{text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:5px;color:var(--azure)}
+.opt .st{color:inherit}
+.hack{display:flex;gap:14px;align-items:flex-start;background:#fff;border:2px solid var(--icy);border-radius:20px;padding:14px 18px;margin:10px 0}
+.hack .n{flex:none;width:42px;height:42px;border-radius:14px;background:var(--azure);color:#fff;display:grid;place-items:center;font:800 22px Alegreya,serif}
+.hack:nth-child(even) .n{background:var(--sky);color:#0f2236}
+.hack b{color:var(--french)}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.pills span{background:#fff;border:2px solid var(--icy);border-radius:999px;padding:4px 14px;font:800 22px Alegreya,serif;color:var(--french)}
+.grp h3{font-size:22px;color:var(--azure)}
+.src{font:700 14px Nunito,sans-serif;background:var(--icy);color:var(--french);border-radius:999px;padding:2px 10px;margin-left:6px;white-space:normal}
+.sets button.on{background:var(--azure);color:#fff}
+.chip{display:inline-block;margin:3px;padding:3px 10px;border-radius:10px;border:2px solid var(--icy);cursor:pointer;background:#fff;font-weight:600;font-size:18px}
+.chip.on{background:var(--azure);color:#fff;border-color:var(--azure)}
+.sch{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0}
+.sch b{font:800 22px Alegreya,serif;color:#fff;background:var(--sky);border-radius:12px;padding:4px 12px;min-width:92px;text-align:center;color:#0f2236}
+.sch input{font:inherit;border:2px solid var(--icy);border-radius:12px;padding:6px 10px;width:150px}
+</style>
+</head>
+<body>
+<main>
+<svg width="0" height="0" style="position:absolute"><symbol id="s" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0c.6 6.6 4.9 11.4 12 12-7.1.6-11.4 5.4-12 12-.6-6.6-4.9-11.4-12-12C7.100 11.400 11.400 6.600 12 0z"/></symbol></svg>
+
+<header>
+  <h1>Слог и ударение</h1>
+  <div class="sub">Урок на 60 минут и диагностический диктант</div>
+</header>
+
+<section style="margin-top:28px">
+  <h2><svg class="star"><use href="#s"/></svg>План урока</h2>
+  <p class="lead">Идём по порядку: от самого простого к проверке.</p>
+  <div class="row r1"><div class="tile"><svg class="star"><use href="#s"/></svg></div><div class="bar"><h3>0–5 мин. Разминка</h3><p>Хлопаем имена: Ма-ша, Ан-тон, На-та-ли-я</p></div></div>
+  <div class="row r2"><div class="tile"><svg class="star"><use href="#s"/></svg></div><div class="bar"><h3>5–17 мин. Слог</h3><p>Правило, лайфхаки, 4 тренажёра</p></div></div>
+  <div class="row r3"><div class="tile"><svg class="star"><use href="#s"/></svg></div><div class="bar"><h3>17–37 мин. Ударение</h3><p>14 лайфхаков, шпаргалка, тренажёры</p></div></div>
+  <div class="row r4"><div class="tile"><svg class="star"><use href="#s"/></svg></div><div class="bar"><h3>37–45 мин. Игры</h3><p>Движение и закрепление</p></div></div>
+  <div class="row r5"><div class="tile"><svg class="star"><use href="#s"/></svg></div><div class="bar"><h3>45–60 мин. Диктант и итоги</h3><p>87 слов, диктант на 90 слов, разбор ошибок</p></div></div>
+</section>
+
+<section>
+  <h2><svg class="star"><use href="#s"/></svg>Слог</h2>
+  <p class="lead">Слог — это часть слова, которую мы произносим одним толчком воздуха.</p>
+  <div class="card">
+    <h3>Главное правило</h3>
+    <p><b>Сколько в слове гласных, столько и слогов.</b> Согласные сами слогов не делают.</p>
+    <div class="vow" aria-label="Гласные буквы">
+      <div class="v">а</div><div class="v">о</div><div class="v">у</div><div class="v">ы</div><div class="v">э</div><div class="v">я</div><div class="v">ё</div><div class="v">ю</div><div class="v">и</div><div class="v">е</div>
+    </div>
+    <p>Это 10 гласных. Они «поют». Всё остальное — согласные.</p>
+    <div class="word"><div class="syl">ма</div><div class="syl">ши</div><div class="syl">на</div><span class="score">&nbsp;3 гласные = 3 слога</span></div>
+    <div class="word"><div class="syl">стол</div><span class="score">&nbsp;1 гласная = 1 слог</span></div>
+  </div>
+  <div class="grid">
+    <div class="note"><b>Подсказка 1.</b> Положи ладонь под подбородок. Сколько раз подбородок толкнул ладонь, столько слогов.</div>
+    <div class="note"><b>Подсказка 2.</b> Буквы <b>ь</b> и <b>ъ</b> звуков не дают, слога от них нет. <b>Й</b> — согласная.</div>
+    <div class="note"><b>Подсказка 3.</b> Слог может состоять из одной гласной: <b>я-блок</b>, <b>у-ро-к</b>.</div>
+  </div>
+
+  <div class="trainer" id="t1">
+    <div class="tag">Тренажёр: сколько слогов?</div>
+    <div class="big" id="w1"></div>
+    <div class="btns" id="b1"><button>1</button><button>2</button><button>3</button><button>4</button><button>5</button></div>
+    <div class="word" id="s1" style="justify-content:center"></div>
+    <div class="msg" id="m1"></div>
+    <div class="btns"><button class="alt" id="n1">Следующее слово</button></div>
+    <div class="score" id="c1"></div>
+  </div>
+
+  <h3 style="margin:26px 0 10px;color:var(--french)">Лайфхаки: как не ошибиться со слогами</h3>
+  <div class="hack"><div class="n">1</div><div><b>Ладонь под подбородок.</b> Каждый толчок — один слог. Работает даже в диктанте, шёпотом.</div></div>
+  <div class="hack"><div class="n">2</div><div><b>Подчеркни гласные карандашом</b> и пересчитай. Не угадывай на слух, считай глазами.</div></div>
+  <div class="hack"><div class="n">3</div><div><b>Тяни слово как резинку:</b> ма-а-ши-и-на-а. Так слоги слышны лучше.</div></div>
+  <div class="hack"><div class="n">4</div><div><b>Й, ь, ъ в счёт не идут.</b> В слове «трамвай» 2 слога, а не 3: гласных две.</div></div>
+
+  <div class="card"><h3>Как переносить слова</h3>
+  <ul class="clean"><li>Переносим по слогам: <b>ма-ши-на</b>.</li><li>Нельзя оставлять на строке одну букву: <b>я-блоко</b> — неверно, <b>яб-локо</b> — верно.</li><li>Ь, Ъ и Й не отрываем от буквы перед ними: <b>паль-то</b>, <b>вой-на</b>, <b>подъ-езд</b>.</li><li>Слова из одного слога не переносим: <b>дом</b>, <b>класс</b>.</li></ul></div>
+
+  <div class="trainer" id="qs"><div class="tag">Тренажёр 2: раздели слово на слоги</div><div class="big q"></div><div class="btns opts"></div><div class="msg"></div><div class="btns"><button class="alt nx">Дальше</button></div><div class="score"></div></div>
+  <div class="trainer" id="qo"><div class="tag">Тренажёр 3: найди лишнее слово</div><div class="big q"></div><div class="btns opts"></div><div class="msg"></div><div class="btns"><button class="alt nx">Дальше</button></div><div class="score"></div></div>
+  <div class="trainer" id="qw"><div class="tag">Тренажёр 4: как можно перенести слово?</div><div class="big q"></div><div class="btns opts"></div><div class="msg"></div><div class="btns"><button class="alt nx">Дальше</button></div><div class="score"></div></div>
+</section>
+
+<section>
+  <h2><svg class="star"><use href="#s"/></svg>Ударение</h2>
+  <p class="lead">Ударение — это когда мы произносим один слог громче и дольше остальных. Он ударный.</p>
+  <div class="card">
+    <h3>Как найти ударение</h3>
+    <ul class="clean">
+      <li>Скажи слово громко и протяжно, как будто зовёшь кого-то издалека: «Ма-а-ашааа!»</li>
+      <li>Покачай слово, как качели: <b>молоко́</b>, <b>мо́локо</b>. Какой вариант звучит правильно?</li>
+      <li>Ударение ставят <b>только над гласной</b>. В слове один ударный слог.</li>
+      <li>В слове с одним слогом ударение есть, но его не отмечают: <b>дом</b>.</li>
+    </ul>
+    <div class="note">Слова с буквой <b>ё</b> всегда с ударением: <b>ёлка</b>, <b>лёд</b>.</div>
+  </div>
+  <h3 style="margin:22px 0 10px;color:var(--french)">Ударение меняет смысл</h3>
+  <div class="pairs">
+    <div class="pair"><div class="w">з<span class="u">а</span>мок</div><small>большой дом короля</small></div>
+    <div class="pair"><div class="w">зам<span class="u">о</span>к</div><small>запирает дверь</small></div>
+    <div class="pair"><div class="w">м<span class="u">у</span>ка</div><small>боль, страдание</small></div>
+    <div class="pair"><div class="w">мук<span class="u">а</span></div><small>для блинов</small></div>
+  </div>
+
+  <h3 style="margin:26px 0 10px;color:var(--french)">9 лайфхаков для ударения (большая буква — ударная)</h3>
+  <div class="hack"><div class="n">1</div><div><b>Зови издалека.</b> Крикни слово как через двор: «Ма-а-ша!». Голос сам выделит ударный слог.</div></div>
+  <div class="hack"><div class="n">2</div><div><b>Качели.</b> Произнеси слово с ударением на каждом слоге по очереди: мО-ло-ко, мо-лО-ко, мо-ло-кО. Правильный вариант слышно сразу.</div></div>
+  <div class="hack"><div class="n">3</div><div><b>Ё всегда ударная.</b> Увидел ё — ударение найдено: свЁкла, ёлка, лЁд.</div></div>
+  <div class="hack"><div class="n">4</div><div><b>Один слог — вопрос закрыт.</b> В слове «дом» ударный слог единственный, ставить знак не надо.</div></div>
+  <div class="hack"><div class="n">5</div><div><b>Ударение по рукам.</b> Слово хлопай: ударный слог — хлопок громче, а на других слогах шлёпай тише.</div></div>
+  <div class="hack"><div class="n">6</div><div><b>Односложные существительные:</b> во множественном числе ударение на первом слоге: тОрты, бАнты, шАрфы, крАны, склАды, лИфты, шпрИцы. Исключения: гербЫ, зонтЫ.</div></div>
+  <div class="hack"><div class="n">7</div><div><b>Глаголы на -ить:</b> звонИт, включИт, позвонИт. Ударение на «ит»: думай про слово «звонит» и повторяй с ним.</div></div>
+  <div class="hack"><div class="n">8</div><div><b>Слова на «-провод»:</b> водопровОд, газопровОд, нефтепровОд. Ударение на последний слог.</div></div>
+  <div class="hack"><div class="n">9</div><div><b>Сомневаешься — проверь.</b> Открой словарь или сайт gramota.ru и введи слово. Так ты запомнишь и сразу проверишь себя.</div></div>
+
+  <div class="card"><h3>5 способов найти ударение</h3>
+    <div class="hack"><div class="n">1</div><div><b>По слогам.</b> Раздели слово на слоги и скажи по слогам: кош-ка, ля-гуш-ка. Один слог прозвучит сильнее всех, он и ударный.</div></div>
+    <div class="hack"><div class="n">2</div><div><b>Ладонь под подбородком.</b> Скажи слово: на ударном слоге подбородок давит на ладонь сильнее.</div></div>
+    <div class="hack"><div class="n">3</div><div><b>Протяни слово.</b> Скажи его громко и певуче, как будто зовёшь: ма-ши-и-на, мя-а-чик. Ударный слог растянется сам.</div></div>
+    <div class="hack"><div class="n">4</div><div><b>Перебор.</b> Ставь ударение по очереди на каждую гласную и слушай: диВАН, но не ДИван. Так же с «компьютером»: компьЮтер.</div></div>
+    <div class="hack"><div class="n">5</div><div><b>Смешные рифмы-запоминалки.</b> Придумай двустишие, где трудное слово стоит на конце или в рифме. Например, про поездку в Куршавель за щавелем или про любителя тортов, который не носит шорты. Рифма сама подскажет ударение: щавЕль, тОрты.</div></div>
+    <div class="note"><b>Важно.</b> В слове с одной гласной ударение есть, но знак не ставят: дом. В слове с ё ударение всегда на ё: ёлка.</div>
+    <p class="score">Придумай свою рифму-запоминалку для слова-ловушки:</p>
+    <textarea rows="3" style="width:100%;font:inherit;border:2px solid var(--icy);border-radius:14px;padding:10px" placeholder="Например, со словом: алфавИт, каталОг, квартАл…"></textarea>
+  </div>
+
+  <div class="card grp"><h3>Шпаргалка: слова-ловушки</h3>
+    <p><b>Ударение на последнем слоге</b> (многие ошибаются, ставят раньше):</p>
+    <div class="pills"><span>алфавИт</span><span>каталОг</span><span>квартАл</span><span>договОр</span><span>портфЕль</span><span>магазИн</span><span>дефИс</span><span>цемЕнт</span><span>экспЕрт</span><span>щавЕль</span><span>жалюзИ</span></div>
+    <p><b>Ударение не на последнем:</b></p>
+    <div class="pills"><span>тОрты</span><span>бАнты</span><span>шАрфы</span><span>кУхонный</span><span>тУфля</span><span>срЕдства</span><span>цепОчка</span><span>красИвее</span><span>киломЕтр</span><span>бухгАлтер</span></div>
+    <div class="note">Для «красивее» верное ударение — на «и»: красИвее, как и в слове «красИвый». Это частая ловушка.</div>
+  </div>
+
+  <div class="card grp"><h3>Шпаргалка 2: группы слов</h3>
+    <p><b>Односложные существительные:</b> во множественном числе ударение на первом слоге. Исключения: гербЫ, зонтЫ.</p><div class="pills"><span>тОрты</span><span>бАнты</span><span>шАрфы</span><span>крАны</span><span>склАды</span><span>лИфты</span><span>шпрИцы</span><span>вОры</span><span>вОлки</span><span>шАхты</span><span>пОрты</span><span>срОки</span><span>Иксы</span><span>гербЫ</span><span>зонтЫ</span></div>
+    <div class="note">Запоминалка: клАла бАнты, шАрфы, тОрты.</div>
+    <p><b>Глаголы:</b> женский род прошедшего времени на «-ла» обычно с ударением на окончании. Но: клАла, крАлась, послАла.</p><div class="pills"><span>началА</span><span>принялА</span><span>взялА</span><span>ждалА</span><span>спалА</span><span>звалА</span><span>клАла</span><span>крАлась</span><span>послАла</span><span>звонИт</span><span>включИт</span><span>сорИт</span><span>щемИт</span><span>одолжИт</span><span>кружИт</span><span>кичИтся</span><span>сверлИт</span><span>убыстрИт</span></div>
+    <p><b>Глаголы на -ить и другие:</b></p><div class="pills"><span>углубИт</span><span>ободрИт</span><span>наделИт</span><span>кровоточИт</span><span>облегчИть</span><span>углубИть</span><span>кАшлянуть</span><span>пЕрчить</span><span>откУпорить</span><span>закУпорить</span><span>принУдить</span><span>исчЕрпать</span><span>баловАть</span><span>премировАть</span><span>сортировАть</span><span>формировАть</span><span>дозИровать</span></div>
+    <p><b>Слова на -лог, -провод, -ал, -атай:</b></p><div class="pills"><span>каталОг</span><span>монолОг</span><span>эпилОг</span><span>диалОг</span><span>некролОг</span><span>филОлог</span><span>психОлог</span><span>социОлог</span><span>физиОлог</span><span>водопровОд</span><span>газопровОд</span><span>нефтепровОд</span><span>мусоропровОд</span><span>электропрОвод</span><span>квартАл</span><span>сериАл</span><span>финАл</span><span>пенАл</span><span>глашАтай</span><span>ходАтай</span><span>ходАтайство</span></div>
+    <p><b>Слова на -ота, -ия, -ение:</b></p><div class="pills"><span>дремОта</span><span>зевОта</span><span>рвОта</span><span>мокрОта</span><span>сухотА</span><span>немотА</span><span>кулинАрия</span><span>металлУргия</span><span>демокрАтия</span><span>гастронОмия</span><span>логопЕдия</span><span>индустрИя</span><span>терапИя</span><span>истерИя</span><span>намЕрение</span><span>обеспЕчение</span></div>
+    <p><b>Прилагательные, причастия, наречия:</b></p><div class="pills"><span>глупА</span><span>веселА</span><span>сильнА</span><span>грУшевый</span><span>слИвовый</span><span>кУхонный</span><span>оптОвый</span><span>красИвейший</span><span>включЁнный</span><span>новорождЁнный</span><span>занятА</span><span>принятА</span><span>нАгнутый</span><span>изОгнутый</span><span>начАв</span><span>принЯв</span><span>докраснА</span><span>дОнизу</span><span>донЕльзя</span><span>мЕльком</span><span>завИдно</span><span>мастерскИ</span></div>
+    <p><b>Запомнить:</b></p><div class="pills"><span>щавЕль</span><span>корЫсть</span><span>пЕтля</span><span>кремЕнь</span><span>недУг</span><span>коклЮш</span><span>инсУльт</span><span>пИхта</span><span>хвОя</span><span>досУг</span><span>христианИн</span><span>кладовАя</span><span>ракУшка</span><span>арАхис</span><span>Искра</span><span>ломтИ</span><span>гренкИ</span><span>афИняне</span></div>
+  </div>
+
+  <div class="trainer" id="t2">
+    <div class="tag">Тренажёр: нажми на ударную гласную</div>
+    <div class="big" id="w2"></div>
+    <div class="msg" id="m2"></div>
+    <div class="btns"><button class="alt" id="n2">Следующее слово</button></div>
+    <div class="score" id="c2"></div>
+  </div>
+  <div class="trainer" id="qt"><div class="tag">Тренажёр 2: как правильно?</div><div class="big q"></div><div class="btns opts"></div><div class="msg"></div><div class="btns"><button class="alt nx">Дальше</button></div><div class="score"></div></div>
+  <div class="note"><b>Правило от учителя:</b> если ученик ошибся, не исправляй сразу. Пусть сам «покачает качели» и услышит верный вариант.</div>
+</section>
+
+<section>
+  <h2><svg class='star'><use href='#s'/></svg>Теория и задания</h2>
+  <p class='lead'>Теория простыми словами и задания на закрепление.</p>
+  <div class='grid'>
+    <div class='card'><h3>Слог и ударение</h3><ul class='clean'><li>В слоге ровно одна гласная, поэтому слогов столько же, сколько гласных.</li><li>Деление на слоги лежит в основе правил переноса.</li><li>Ударение может падать на любой слог и «ходить» по слову: голова, голов, головы (разноместное и подвижное).</li><li>Ударение отличает слова и формы: Атлас (сборник карт) и атлАс (ткань); рУки и рукИ.</li></ul></div>
+    <div class='card'><h3>Ударный слог и подвижное ударение</h3><ul class='clean'><li>Слог — это гласный звук или согласный с гласным, которые мы произносим одним толчком воздуха.</li><li>Ударный слог сильнее и чётче безударного (силовое ударение).</li><li>Предлоги, союзы и частицы обычно без ударения: под горОй, не сидЕл.</li><li>Ударение подвижное: волнА — вОлны, сторонА — стОрону.</li></ul></div>
+  </div>
+
+  <div class='trainer' id='qc'><div class='tag'>Тренажёр: ударение меняет смысл</div><div class='big q'></div><div class='btns opts'></div><div class='msg'></div><div class='btns'><button class='alt nx'>Дальше</button></div><div class='score'></div></div>
+
+  <div class='trainer'><div class='tag'>Логическое ударение: выдели голосом главное слово</div><div class='big' id='lgs' style='font-size:34px'></div><div class='msg ok' id='lgm' style='min-height:56px'>Нажми на слово: его надо выделить голосом.</div></div>
+
+  <div class='hack'><div class='n'>10</div><div><b>Предлог не получает ударения.</b> Говори «под горОй» как одно слово: ударение в слове «гора», а «под» к нему прижимается.</div></div>
+
+  <h3 style='margin:30px 0 6px;color:var(--french);font-size:30px'>Задания: всё здесь</h3>
+  <p class='lead'>Выбирай набор, читай слова вслух и ставь ударение.</p>
+
+  <div class='trainer' id='tp'><div class='tag'>Поставь ударение</div>
+    <p class='score' style='margin:0 0 8px'>Выбери набор, прочитай слово вслух и нажми на ударную гласную.</p>
+    <div class='btns sets'></div><div class='big w'></div><div class='msg'></div><div class='btns'><button class='alt nx'>Следующее слово</button></div><div class='score'></div></div>
+
+  <div class='trainer' id='tp2'><div class='tag'>Поставь ударение по шпаргалке</div>
+    <p class='score' style='margin:0 0 8px'>Выбери группу слов, прочитай слово вслух и нажми на ударную гласную.</p>
+    <div class='btns sets'></div><div class='big w'></div><div class='msg'></div><div class='btns'><button class='alt nx'>Следующее слово</button></div><div class='score'></div></div>
+
+  <div class='card'><h3>Одно слово, две формы</h3>
+    <p>Прочитай слова сначала с ударением на первом слоге, потом на втором. Что меняется? <b>Число и падеж.</b></p>
+    <div class='pills'><span>Иглы — иглЫ</span><span>стЕны — стенЫ</span><span>рУки — рукИ</span><span>нОги — ногИ</span><span>вОды — водЫ</span><span>зЕмли — землИ</span><span>кОзы — козЫ</span><span>рЕки — рекИ</span><span>дОски — доскИ</span><span>вОлны — волнЫ</span></div>
+    <p>Ещё примеры: <b>сЕло</b> (деревня, сущ.) — <b>селО</b> (солнце село, глагол); <b>мУки</b> (страдания) — <b>мукИ</b> (для блинов); <b>дорОгой</b> (идти дорогой, сущ.) — <b>дорогОй</b> (дорогой друг, прил.); <b>рЕки</b> (мн. ч.) — <b>рекИ</b> (ед. ч., р. п.); <b>вОрот</b> (воротник) — <b>воротА</b>.</p>
+    <p class='score'>Письменно: составь по предложению с каждой парой слов.</p>
+  </div>
+
+  <div class='trainer' id='qx'><div class='tag'>Выбери ударение по смыслу</div><div class='big q'></div><div class='btns opts'></div><div class='msg'></div><div class='btns'><button class='alt nx'>Дальше</button></div><div class='score'></div></div>
+
+  <div class='card'><h3>Слова по схемам</h3>
+    <p>Подбери слово к каждой схеме. С — согласный звук, Г — гласный. Слова с е, ё, ю, я после гласной считай по звукам: в слове «моя» есть звук [й].</p>
+    <div id='sch'></div>
+  </div>
+
+  <div class='trainer' id='qn'><div class='tag'>Допиши правило произношения</div><div class='big q'></div><div class='btns opts'></div><div class='msg'></div><div class='btns'><button class='alt nx'>Дальше</button></div><div class='score'></div></div>
+
+  <div class='trainer' id='qz'><div class='tag'>В какую группу слово?</div><div class='big q'></div><div class='btns opts'></div><div class='msg'></div><div class='btns'><button class='alt nx'>Дальше</button></div><div class='score'></div></div>
+
+  <div class='card'><h3>Логическое ударение в пословицах</h3>
+    <p>Нажми на слова, которые несут главный смысл. Их выделяют голосом, а на письме подчёркивают.</p>
+    <div id='prv'></div>
+  </div>
+
+  <div class='card'><h3>Слово «что»</h3>
+    <p>Прочитай про себя, потом вслух, выделяя нужные слова. «Что» в этих предложениях читается как [што].</p>
+    <div class='dict'><p>Владимир с ужасом увидел, <b>что</b> он заехал в незнакомый лес.</p><p>Нежданов не знал, <b>что</b> отвечать.</p><p>Расскажите мне, как найти потаённую лестницу.</p></div>
+    <p class='score'>Сравни буквы и звуки в слове «что»: букв 3, звуков 3, но произносится [шт].</p>
+  </div>
+
+  <div class='card'><h3>Мои слова</h3>
+    <p>Придумай слова, где ударение «ходит»: по 5 слов, у каждого поставь ударение и скажи, на какой слог оно падает. Пример: волнА — вОлны.</p>
+    <textarea rows='5' style='width:100%;font:inherit;border:2px solid var(--icy);border-radius:14px;padding:10px' placeholder='Пиши сюда: слово — слог'></textarea>
+  </div>
+
+  <div class='card'><h3>Фонетический разбор слова</h3>
+    <div class='hack'><div class='n'>1</div><div>Слоги и ударение.</div></div>
+    <div class='hack'><div class='n'>2</div><div>Гласные звуки: ударные и безударные, какими буквами обозначены.</div></div>
+    <div class='hack'><div class='n'>3</div><div>Согласные звуки: звонкие или глухие, твёрдые или мягкие, какими буквами обозначены.</div></div>
+    <div class='hack'><div class='n'>4</div><div>Сколько букв и сколько звуков.</div></div>
+    <div class='note'><b>Образец «союз».</b> Два слога, ударение на втором: со-Юз. Гласные: [а] безударный (буква о), [у] ударный (буква ю). Согласные: [с], [й’], [с]. Букв 4, звуков 5.</div>
+  </div>
+</section>
+
+<section>
+  <h2><svg class="star"><use href="#s"/></svg>Игры на перемену</h2>
+  <p class="lead">Идеи на 10 минут, подойдут для одного ученика и для группы.</p>
+  <div class="grid">
+    <div class="card"><h3>Хлопки-слоги</h3><p>Преподаватель называет слово, ученик хлопает слоги и называет число. Ударный слог хлопает громче.</p></div>
+    <div class="card"><h3>Робот</h3><p>Ученик говорит как робот по слогам: «ка-ран-даш». Преподаватель угадывает слово. Потом меняются.</p></div>
+    <div class="card"><h3>Качели</h3><p>Слово произносят с ударением на разные слоги. Ученик показывает рукой: вверх — ударный слог.</p></div>
+    <div class="card"><h3>Слоговая змейка</h3><p>Последний слог начинает новое слово: ма-ши-на → на-род → род-ник. Строим цепочку на 10 слов.</p></div>
+    <div class="card"><h3>Присядь-встань</h3><p>Преподаватель называет слова. Ударение на последнем слоге — ученик встаёт, в другом месте — садится.</p></div>
+    <div class="card"><h3>Шёпот и крик</h3><p>Слово произносят шёпотом, а ударный слог — громко. Потом ученик делает то же самое.</p></div>
+    <div class="card"><h3>Ловушка</h3><p>Преподаватель специально неправильно ставит ударение. Ученик кричит «Стоп!» и исправляет.</p></div>
+    <div class="card"><h3>Карточки-слова</h3><p>На карточках слова-ловушки. Ученик вытягивает карточку, ставит ударение и хлопает слоги.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2><svg class="star"><use href="#s"/></svg>Диагностический диктант</h2>
+  <p class="lead">87 слов (с предлогами и союзами). Нужен, чтобы увидеть, что уже получается, а что стоит повторить.</p>
+  <div class="card">
+    <h3>Как провести</h3>
+    <ul class="clean">
+      <li>Прочитать весь текст целиком, ученик только слушает.</li>
+      <li>Диктовать по частям: 3–5 слов, повторять каждую часть дважды.</li>
+      <li>В конце прочитать текст ещё раз, ученик проверяет написанное.</li>
+      <li>Время: 15 минут вместе с проверкой.</li>
+    </ul>
+  </div>
+  <details class="dict">
+    <summary>Текст диктанта «Осенний лес» (для преподавателя)</summary>
+    <p>Наступила осень. Утром в лесу тихо и сыро. С деревьев падают <em>жёлтые</em> листья. Они лежат на земле, как мягкий ковёр.</p>
+    <p>Под старой <em>елью</em> растут грибы. Мальчик Миша взял <em>корзинку</em> и пошёл в лес. Он долго искал <em>подберёзовики</em>.</p>
+    <p>Вдруг на <em>тропинке</em> он увидел ежа. <em>Ёжик</em> сопел и тащил на иголках яблоко. Миша не стал его пугать. Он тихо отошёл в сторону.</p>
+    <p>Вечером ребята пришли домой с полными корзинами. Мама сварила вкусный суп из грибов. Дома стало тепло и уютно. Все сели за стол и долго разговаривали о лесе.</p>
+    <small>Выделены слова для особого внимания: ё, мягкий знак, безударные гласные.</small>
+  </details>
+
+  <details class="dict">
+    <summary>Мини-диктант «Ударение» на 15 слов</summary>
+    <p>Диктуй слова по одному. Ученик записывает слово, делит на слоги и ставит знак ударения.</p>
+    <p>торты, алфавит, звонит, каталог, договор, портфель, кухонный, свёкла, цепочка, щавель, километр, магазин, тетрадь, красивый, гора</p>
+    <small>Проверка: за каждое слово 1 балл (слоги и ударение верно). 13–15 — отлично, 10–12 — хорошо, меньше 10 — повторить лайфхаки.</small>
+  </details>
+
+  <h3 style='margin:30px 0 6px;color:var(--french);font-size:30px'>Диктант на слова (90 слов)</h3>
+  <p class='lead'>Читайте слова по одному, по два раза, с паузами. Диктант разбит на три части по 30 слов, и в каждой части своё задание.</p>
+  <details class='dict' open>
+    <summary>Часть 1. Просто запишите (30 слов)</summary>
+    <p>дом, лес, река, окно, ёлка, мальчик, картина, берёза, деревня, корзина, молоко, хлеб, учитель, ученик, тетрадь, карандаш, рюкзак, школа, дорога, улица, яблоко, ёжик, осень, зима, мороз, снегирь, воробей, ворона, подъезд, семья</p>
+  </details>
+  <details class='dict'>
+    <summary>Часть 2. Запишите слова и поставьте ударение (30 слов)</summary>
+    <p>торты, банты, шарфы, алфавит, звонит, включит, каталог, квартал, договор, красивее, кухонный, свёкла, щавель, цепочка, километр, магазин, документ, дефис, завод, средства, туфля, эксперт, досуг, предмет, шофёр, инженеры, адреса, принять, начать, понял</p>
+    <p><b>Ключ для вас</b> (большая буква — ударная): тОрты, бАнты, шАрфы, алфавИт, звонИт, включИт, каталОг, квартАл, договОр, красИвее, кУхонный, свЁкла, щавЕль, цепОчка, километр (киломЕтр), магазИн, документ (докумЕнт), дефИс, завОд, срЕдства, тУфля, экспЕрт, досУг, предмЕт, шофЁр, инженЕры, адресА, принЯть, начАть, пОнял.</p>
+  </details>
+  <details class='dict'>
+    <summary>Часть 3. Записать, разделить на слоги, написать число слогов (30 слов)</summary>
+    <p>машина, рябина, библиотека, апельсин, колокольчик, трамвай, страна, подарок, здоровье, воскресенье, стрекоза, лягушка, ящерица, одуванчик, праздник, солнце, вьюга, лисица, птица, лодка, пароход, самолёт, вертолёт, велосипед, футбол, площадка, качели, каникулы, друзья, радость</p>
+    <p><b>Ключ по числу слогов:</b> ма-ши-на 3, ря-би-на 3, биб-ли-о-те-ка 5, а-пель-син 3, ко-ло-коль-чик 4, трам-вай 2, стра-на 2, по-да-рок 3, здо-ро-вье 3, вос-кре-се-нье 4, стре-ко-за 3, ля-гуш-ка 3, я-ще-ри-ца 4, о-ду-ван-чик 4, праз-дник 2, солн-це 2, вью-га 2, ли-си-ца 3, пти-ца 2, лод-ка 2, па-ро-ход 3, са-мо-лёт 3, вер-то-лёт 3, ве-ло-си-пед 4, фут-бол 2, пло-щад-ка 3, ка-че-ли 3, ка-ни-ку-лы 4, дру-зья 2, ра-дость 2.</p>
+  </details>
+  <details class='dict'>
+    <summary>Дополнительный диктант по шпаргалке (46 слов)</summary>
+    <p>краны, склады, лифты, шприцы, воры, шахты, сроки, начала, приняла, взяла, ждала, клала, кралась, послала, сверлит, кружит, облегчить, сериал, финал, пенал, монолог, некролог, дремота, сирота, столяр, ходатайство, кулинария, металлургия, глупа, весела, грушевый, оптовый, джинсовый, красивейший, докрасна, донизу, донельзя, мельком, недуг, инсульт, кремень, пихта, христианин, кладовая, ракушка, арахис</p>
+    <p><b>Ключ для вас</b> (большая буква — ударная): крАны, склАды, лИфты, шпрИцы, вОры, шАхты, срОки, началА, принялА, взялА, ждалА, клАла, крАлась, послАла, сверлИт, кружИт, облегчИть, сериАл, финАл, пенАл, монолОг, некролОг, дремОта, сиротА, столЯр, ходАтайство, кулинАрия, металлУргия, глупА, веселА, грУшевый, оптОвый, джинсОвый, красИвейший, докраснА, дОнизу, донЕльзя, мЕльком, недУг, инсУльт, кремЕнь, пИхта, христианИн, кладовАя, ракУшка, арАхис.</p>
+    <small>Не входит в 90 баллов. Подходит для повторения и домашнего задания. Оценка: ошибок не больше 4 — отлично, 5–9 — хорошо, 10–18 — удовлетворительно.</small>
+  </details>
+  <div class='note'><b>Оценивание.</b> За каждое верное слово 1 балл (в частях 2 и 3 слово должно быть записано верно и с правильным заданием). 81–90 баллов — отлично, 66–80 — хорошо, 45–65 — удовлетворительно, меньше 45 — нужен повтор темы.</div>
+  <div class='trainer'><div class='tag'>Баллы за диктант на слова</div><div class='calc'><input id='wp' type='number' min='0' max='90' value='90' aria-label='Баллы из 90' style='font:800 36px Alegreya,serif;width:110px;text-align:center;border:2px solid var(--icy);border-radius:14px;padding:6px'><div class='grade' id='wv'></div></div><p class='score'>из 90 баллов</p></div>
+
+  <details class='dict'>
+    <summary>Текст для репетитора: что рассказывать</summary>
+    <h3 style='color:var(--azure);margin-top:10px'>Начало (1 минута)</h3>
+    <p>«Сегодня мы разберём две вещи, без которых нельзя правильно говорить и писать: слог и ударение. Звучит сложно, но на самом деле это очень просто. Ты уже умеешь делить слова на слоги, когда хлопаешь или поёшь песню. Мы только назовём это умение правильными словами».</p>
+    <h3 style='color:var(--azure)'>Про слог (4–5 минут)</h3>
+    <p>«Слово состоит из звуков. Одни звуки мы поём, например а, о, у. Это гласные. Другие мы не можем спеть, например к, т, с. Это согласные. Слог получается вокруг гласного, как бусина вокруг нитки. Сколько в слове гласных, столько и слогов. Возьмём слово “машина”. Гласные тут а, и, а, значит три слога: ма-ши-на. А в слове “дом” одна гласная, значит один слог. Проверим другим способом: положи ладонь под подбородок и скажи слово. Каждый раз, когда подбородок толкнул ладонь, это слог. Буквы ь и ъ слогов не дают, это знаки, они не поются. Буква й тоже не гласная. В слове “трамвай” два слога: трам-вай».</p>
+    <h3 style='color:var(--azure)'>Про ударение (8–10 минут)</h3>
+    <p>«Когда мы говорим слово, один слог мы произносим громче и дольше. Он называется ударным. Позови кого-нибудь через двор: “Ма-а-аша!”. Ты сам вытянул ударный слог. Ударение ставят над гласной буквой. В слове с одним слогом ударение есть, но знак не ставят, оно и так понятно. Ударение в русском языке бывает на любом слоге, поэтому его надо запоминать. И оно может переезжать: волнА, но вОлны. Иногда от ударения зависит смысл: зАмок, где живёт король, и замОк, который закрывает дверь. Ещё один способ проверить себя: “качели”. Скажи слово с ударением на каждом слоге по очереди: мОлоко, молОко, молокО. Правильный вариант сам прозвучит как знакомый».</p>
+    <h3 style='color:var(--azure)'>Лайфхаки по ударению (5 минут)</h3>
+    <p>«Запомни несколько правил, они сильно облегчают жизнь. Если в слове есть буква ё, она всегда ударная: свЁкла, лЁд. Односложные слова во множественном числе ударяются на первый слог: тОрты, бАнты, шАрфы, крАны, склАды, лИфты, шпрИцы. Исключения: гербЫ, зонтЫ. Глаголы на -ит: звонИт, включИт. Слова на -провод: водопровОд, газопровОд. А слова-ловушки, например алфавИт, квартАл, каталОг, договОр, просто выучи. Ещё есть пять приёмов: разделить слово на слоги и сказать по слогам, положить ладонь под подбородок, протянуть слово, перебрать ударение по всем гласным и придумать смешную рифму. Если сомневаешься, открой словарь или сайт gramota.ru и проверь».</p>
+    <h3 style='color:var(--azure)'>Как проходит диктант (2 минуты)</h3>
+    <p>«Сейчас я буду читать слова. Каждое слово я скажу два раза. В первой части просто пишешь слово. Во второй части пишешь слово и над нужной гласной ставишь ударение. В третьей части пишешь слово, делишь его чертой на слоги и справа ставишь число. Если не успеваешь, поставь прочерк и иди дальше. Ошибка в диктанте это не плохо. Она просто показывает, что нам повторять».</p>
+    <h3 style='color:var(--azure)'>Конец урока (2 минуты)</h3>
+    <p>«Давай вспомним главное. Сколько слогов в слове? Столько, сколько гласных. Что такое ударный слог? Слог, который мы произносим громче и дольше. Как проверить ударение? Позвать слово издалека или покачать на качелях. Если что-то осталось непонятным, мы повторим это на следующем занятии».</p>
+  </details>
+
+  <div class="card check">
+    <h3>Что проверяем</h3>
+    <label><input type="checkbox">Заглавные буквы в начале предложений и в имени</label>
+    <label><input type="checkbox">Точки в конце предложений</label>
+    <label><input type="checkbox">Безударные гласные (л<b>е</b>су, ел<b>ь</b>ю)</label>
+    <label><input type="checkbox">Буква ё и мягкий знак (жёлтые, ёжик, корзинку)</label>
+    <label><input type="checkbox">Слитно и раздельно (на земле, в лес)</label>
+    <label><input type="checkbox">Перенос слов по слогам, если был</label>
+  </div>
+
+  <div class="trainer">
+    <div class="tag">Калькулятор оценки (ориентир)</div>
+    <div class="calc">
+      <button class="alt" id="minus" aria-label="Меньше ошибок">−</button>
+      <div><div class="num" id="errs">0</div><div class="score">ошибок</div></div>
+      <button id="plus" aria-label="Больше ошибок">+</button>
+      <div class="grade" id="gr">5</div>
+    </div>
+    <p class="score">0 ошибок — «5», 1–2 — «4», 3–5 — «3», 6 и больше — «2». Итоговую оценку лучше уточнить по требованиям вашей школы.</p>
+  </div>
+</section>
+
+<section>
+  <h2><svg class="star"><use href="#s"/></svg>Итоги</h2>
+  <div class="grid">
+    <div class="card"><h3>Я умею</h3>
+      <div class="check"><label><input type="checkbox">Считать слоги по гласным</label>
+      <label><input type="checkbox">Делить слово на слоги</label>
+      <label><input type="checkbox">Находить ударную гласную</label>
+      <label><input type="checkbox">Написать текст без пропусков слов</label></div></div>
+    <div class="card"><h3>Разбор ошибок на уроке</h3>
+      <ul class="clean"><li>Выпиши слова с ошибками и подчеркни трудное место.</li>
+      <li>Объясни, как проверить каждое слово: слоги, ударение, правило.</li>
+      <li>Назови слова, которые получились лучше всего. Это твой плюс.</li></ul></div>
+  </div>
+</section>
+<footer>Слог · ударение · диктант. Удачного урока!</footer>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const shuffle=a=>a.sort(()=>Math.random()-.5);
+/* trainer 1 */
+const W1=["ок-но","солн-це","ё-жик","мо-ло-ко","у-че-ник","а-пель-син","стул","биб-ли-о-те-ка","яб-ло-ко","ёл-ка","ка-ран-даш"];
+let q1=shuffle([...W1]),i1=0,ok1=0,done1=false;
+function show1(){
+  const w=q1[i1%q1.length];done1=false;
+  $("w1").textContent=w.replace(/-/g,"");$("s1").innerHTML="";$("m1").textContent="";$("m1").className="msg";
+  $("c1").textContent="Верных ответов: "+ok1;
+}
+document.querySelectorAll("#b1 button").forEach(b=>b.onclick=()=>{
+  if(done1)return;done1=true;
+  const w=q1[i1%q1.length],parts=w.split("-"),good=+b.textContent===parts.length;
+  if(good)ok1++;
+  $("m1").textContent=good?"Верно! Слогов: "+parts.length:"Почти. Правильно: "+parts.length;
+  $("m1").className="msg "+(good?"ok":"bad");
+  $("s1").innerHTML=parts.map(p=>'<div class="syl">'+p.replace(/[аоуыэяёюиеАОУЫЭЯЁЮИЕ]/g,"<b>$&</b>")+"</div>").join("");
+  $("c1").textContent="Верных ответов: "+ok1;
+});
+$("n1").onclick=()=>{i1++;show1()};show1();
+/* trainer 2 */
+const W2=[["гора",3],["звонит",4],["торты",1],["кошка",1],["тетрадь",4],["красивый",4],["портфель",5],["договор",5],["каникулы",3],["щавель",3],["алфавит",5],["банты",1],["шарфы",1],["включит",5],["красивее",4],["каталог",5],["квартал",5],["километр",5],["кухонный",1],["цепочка",3],["свёкла",2],["туфля",1],["мастерски",8],["жалюзи",5],["эксперт",4],["дефис",3],["магазин",5],["цемент",3],["средства",2],["бухгалтер",4],["позвонит",6],["кварталы",5],["шофёр",3],["инженеры",5],["адреса",5],["принял",2],["повторит",6],["диалог",4],["создала",6],["понял",1],["принять",4],["начать",3],["документ",5],["предмет",5],["досуг",3],["гантель",4],["шедевр",3],["осень",0],["телята",3],["апельсин",6],["лошадь",1],["мёд",1],["волк",1],["облако",0],["краны",2],["склады",3],["лифты",1],["шприцы",3],["воры",1],["волки",1],["шахты",1],["порты",1],["сроки",2],["иксы",0],["гербы",4],["зонты",4],["начала",5],["приняла",6],["взяла",4],["ждала",4],["спала",4],["звала",4],["клала",2],["кралась",2],["послала",4],["сорит",3],["щемит",3],["одолжит",5],["кружит",4],["кичится",3],["сверлит",5],["убыстрит",6],["углубит",5],["ободрит",5],["наделит",5],["кровоточит",8],["облегчить",6],["углубить",5],["кашлянуть",1],["перчить",1],["откупорить",3],["закупорить",3],["принудить",4],["исчерпать",3],["баловать",5],["премировать",8],["сортировать",8],["формировать",8],["дозировать",3],["кулинария",5],["гастрономия",7],["логопедия",5],["патриархия",5],["металлургия",6],["демократия",6],["наркомания",6],["буржуазия",7],["диоптрия",6],["гемофилия",7],["асимметрия",8],["истерия",5],["индустрия",7],["терапия",5],["намерение",3],["обеспечение",5],["вероисповедание",9],["мусоропровод",10],["водопровод",8],["нефтепровод",9],["газопровод",8],["электропровод",9],["монолог",5],["эпилог",4],["некролог",6],["филолог",3],["психолог",4],["социолог",4],["физиолог",4],["местностей",1],["челюстей",1],["почестей",1],["новостей",6],["дремота",4],["зевота",3],["мокрота",4],["сухота",3],["рвота",2],["немота",5],["сирота",5],["сироты",3],["столяр",4],["сериал",4],["финал",3],["пенал",3],["глашатай",4],["завсегдатай",7],["ходатай",3],["ходатайство",3],["корысть",3],["ревень",3],["кремень",4],["недуг",3],["коклюш",4],["инсульт",3],["пихта",1],["хвоя",2],["мещанин",5],["христианин",8],["кладовая",6],["ракушка",3],["толика",3],["арахис",2],["искра",0],["ломти",4],["гренки",5],["афиняне",2],["вавилоняне",5],["всенощная",2],["вечеря",1],["благовест",2],["послушник",1],["катарсис",1],["догмат",1],["знамение",2],["верба",1],["киноварь",1],["глупа",4],["горька",5],["весела",5],["сильна",5],["бодра",4],["смела",4],["гибка",4],["грушевый",2],["сливовый",2],["щавелевый",3],["бочковый",1],["девичий",1],["подростковый",4],["оптовый",3],["кедровый",4],["оркестровый",7],["джинсовый",5],["красивейший",4],["прозорлива",7],["смазлива",5],["суетлива",5],["болтлива",5],["прожорлива",4],["включённый",5],["испечённый",5],["окружённый",5],["облегчённый",6],["углублённый",6],["новорождённый",8],["занята",5],["принята",6],["умерший",2],["нагнутый",1],["согнутый",1],["подогнутый",3],["разогнутый",3],["выгнутый",1],["перегнутый",3],["изогнутый",2],["начав",3],["приняв",4],["заняв",3],["начавший",3],["докрасна",7],["добела",5],["дочерна",6],["дотемна",6],["донизу",1],["доверху",1],["досыта",1],["донельзя",3],["загодя",1],["памятуя",1],["мельком",1],["завидно",3],["издревле",4],["втридешева",3]];
+const V="аоуыэяёюие";
+let q2=shuffle([...W2]),i2=0,ok2=0,done2=false;
+function show2(){
+  const [w,p]=q2[i2%q2.length];done2=false;
+  $("w2").innerHTML=[...w].map((c,k)=>V.includes(c)?'<span class="l vv" role="button" tabindex="0" data-k="'+k+'">'+c+'</span>':'<span class="l">'+c+'</span>').join("");
+  $("m2").textContent="";$("m2").className="msg";$("c2").textContent="Верных ответов: "+ok2;
+  $("w2").querySelectorAll(".vv").forEach(s=>{
+    const go=()=>{
+      if(done2)return;
+      if(+s.dataset.k===p){done2=true;ok2++;s.classList.add("good");s.textContent=s.textContent+"\u0301";$("m2").textContent="Верно! Это ударная гласная";$("m2").className="msg ok";$("c2").textContent="Верных ответов: "+ok2}
+      else{s.classList.add("no");$("m2").textContent="Не эта. Скажи слово громко, как будто зовёшь";$("m2").className="msg bad"}
+    };
+    s.onclick=go;s.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}};
+  });
+}
+$("n2").onclick=()=>{i2++;show2()};show2();
+/* quizzes */
+const bag=a=>{let q=[];return()=>{if(!q.length)q=shuffle([...a]);return q.pop()}};
+const st=s=>[...s].map(c=>c!==c.toLowerCase()?'<span class="st">'+c.toLowerCase()+'</span>':c).join('');
+function quiz(id,gen){
+  const r=$(id),m=r.querySelector('.msg'),o=r.querySelector('.opts');let n=0,ok=0,cur,done=false;
+  function next(){
+    cur=gen();done=false;r.querySelector('.q').innerHTML=cur.q;o.innerHTML='';m.textContent='';m.className='msg';n++;
+    cur.opts.forEach((t,i)=>{const b=document.createElement('button');b.className='alt opt';b.innerHTML=t;
+      b.onclick=()=>{if(done)return;done=true;const g=i===cur.a;if(g)ok++;
+        b.style.background=g?'var(--ok)':'var(--bad)';b.style.color='#fff';
+        if(!g){o.children[cur.a].style.outline='4px solid var(--ok)'}
+        m.textContent=cur.fb(g);m.className='msg '+(g?'ok':'bad');
+        r.querySelector('.score').textContent='Верных ответов: '+ok+' из '+n};
+      o.appendChild(b)});
+  }
+  r.querySelector('.nx').onclick=next;next();
+}
+const gS=bag(["ма-ши-на|маш-ина|ма-шин-а","ро-за|роз-а|р-оза","лу-на|лун-а|л-уна","ко-ро-ва|кор-ова|ко-ров-а","го-род|гор-од|г-ород","ре-ка|рек-а|р-ека","бе-ре-за|бер-еза|бе-рез-а","ма-ли-на|мал-ина|ма-лин-а","сло-ва|слов-а|с-лова","мо-ло-ко|мол-око|мо-лок-о","ба-ра-бан|бар-абан|ба-раб-ан","у-ро-ки|ур-оки|у-рок-и"]);
+quiz('qs',()=>{const[r,a,b]=gS().split('|'),o=shuffle([r,a,b]);return{q:r.replace(/-/g,''),opts:o,a:o.indexOf(r),fb:g=>g?'Верно! Слогов: '+r.split('-').length:'Правильно: '+r+'. Каждый слог содержит гласную.'}});
+const gO=bag([[['луна','река','дом','гора'],'дом','В слове «дом» один слог, в остальных по два.'],[['слон','кот','мышь','лиса'],'лиса','В слове «лиса» два слога, в остальных один.'],[['арбуз','банан','слива','яблоко'],'яблоко','В слове «яблоко» три слога, в остальных два.'],[['молоко','корова','сметана','хлеб'],'хлеб','В слове «хлеб» один слог, в остальных три.'],[['бабочка','стрекоза','жук','муравей'],'жук','В слове «жук» один слог, в остальных три.']]);
+quiz('qo',()=>{const[w,x,e]=gO(),o=shuffle([...w]);return{q:'<span style="font-size:24px">Какое слово лишнее по числу слогов?</span>',opts:o,a:o.indexOf(x),fb:g=>(g?'Верно! ':'Нет. ')+e}});
+const gW=bag(["вой-на|во-йна|в-ойна","паль-то|па-льто|пал-ьто","ар-буз|а-рбуз|арб-уз","яб-локо|я-блоко|ябл-око","ёл-ка|ё-лка|ёлк-а","подъ-езд|под-ъезд|по-дъезд"]);
+quiz('qw',()=>{const[r,a,b]=gW().split('|'),o=shuffle([r,a,b]);return{q:r.replace(/-/g,''),opts:o,a:o.indexOf(r),fb:g=>g?'Верно!':'Правильно: '+r+'. Одну букву на строке не оставляем, ь, ъ и й не отрываем.'}});
+const gT=bag(["алфавИт|алфАвит","тОрты|тортЫ","бАнты|бантЫ","шАрфы|шарфЫ","звонИт|звОнит","включИт|вклЮчит","красИвее|красивЕе","каталОг|катАлог","квартАл|квАртал","киломЕтр|килОметр","кУхонный|кухОнный","цепОчка|цЕпочка","щавЕль|щАвель","тУфля|туфлЯ","мастерскИ|мастЕрски","договОр|дОговор","портфЕль|пОртфель","дефИс|дЕфис","магазИн|магАзин","цемЕнт|цЕмент","срЕдства|средствА","бухгАлтер|бухгалтЕр","позвонИт|позвОнит","жалюзИ|жалЮзи","квартАлы|кварталЫ","инженЕры|инжЕнеры","адресА|адрЕса","пОнял|понЯл","принЯть|прИнять","начАть|нАчать","повторИт|повтОрит","создалА|сОздала","диалОг|дИалог","докумЕнт|докУмент","предмЕт|прЕдмет","досУг|дОсуг","шофЁр|шОфер","арбУза|арбузА","сильнА|сИльна","гантЕль|гАнтель","крАны|кранЫ","склАды|складЫ","лИфты|лифтЫ","шпрИцы|шприцЫ","вОры|ворЫ","шАхты|шахтЫ","срОки|срокИ","гербЫ|гЕрбы","зонтЫ|зОнты","началА|нАчала","принялА|прИняла","взялА|взЯла","ждалА|ждАла","клАла|клалА","крАлась|кралАсь","послАла|послалА","монолОг|монОлог","некролОг|некрОлог","сериАл|серИал","финАл|фИнал","пенАл|пЕнал","ходАтайство|ходатАйство","дремОта|дрЕмота","зевОта|зЕвота","немотА|нЕмота","сиротА|сирОта","столЯр|стОляр","докраснА|докрАсна","дОверху|довЕрху","донЕльзя|дОнельзя","зАгодя|загОдя","мЕльком|мелькОм","завИдно|зАвидно","издрЕвле|издревлЕ","втрИдешева|втридешевА","нАгнутый|нагнУтый","изОгнутый|изогнУтый","начАв|нАчав","принЯв|прИняв","занятА|зАнята","глупА|глУпа","веселА|вЕсела","красИвый|красивЫй","грУшевый|грушЕвый","слИвовый|сливОвый","оптОвый|Оптовый","кедрОвый|кЕдровый","джинсОвый|джИнсовый","оркестрОвый|оркЕстровый","бОчковый|бочкОвый","дЕвичий|девИчий","подрОстковый|подросткОвый","баловАть|бАловать","премировАть|премИровать","сортировАть|сортИровать","исчЕрпать|исчерпАть","закУпорить|закупОрить","откУпорить|откупОрить","принУдить|прИнудить","облегчИть|облЕгчить","кАшлянуть|кашлянУть","пЕрчить|перчИть","щемИт|щЕмит","сорИт|сОрит","кружИт|крУжит","кичИтся|кИчится","сверлИт|свЕрлит","углубИт|углУбит","ободрИт|обОдрит","наделИт|надЕлит","кровоточИт|кровотОчит","одолжИт|одОлжит","мусоропровОд|мусопрОвод","водопровОд|водопрОвод","газопровОд|газопрОвод","электропрОвод|электропровОд","филОлог|филолОг","психОлог|психолОг","социОлог|социолОг","недУг|нЕдуг","коклЮш|кОклюш","инсУльт|Инсульт","пИхта|пихтА","хвОя|хвоЯ","кремЕнь|крЕмень","ревЕнь|рЕвень","корЫсть|кОрысть","мещанИн|мЕщанин","христианИн|христИанин","кладовАя|кладОвая","ракУшка|рАкушка","толИка|тОлика","арАхис|арахИс","афИняне|афинЯне","вавилОняне|вавИлоняне","ломтИ|лОмти","гренкИ|грЕнки","всЕнощная|всенОщная","блАговест|благовЕст","вЕрба|вербА","кИноварь|киновАрь","дОгмат|догмАт","знАмение|знамЕние","пОслушник|послУшник","кАтарсис|катАрсис","вЕчеря|вечЕря","намЕрение|намерЕние","обеспЕчение|обеспечЕние","вероисповЕдание|вероисповедАние","кулинАрия|кулИнария","гастронОмия|гастрОномия","логопЕдия|логопедИя","патриАрхия|патриархИя","металлУргия|металлургИя","демокрАтия|демократИя","наркомАния|наркоманИя","буржуазИя|буржУазия","диоптрИя|диОптрия","гемофилИя|гемофИлия","асимметрИя|асиммЕтрия","истерИя|истЕрия","индустрИя|индУстрия","терапИя|тЕрапия","каучУк|кАучук","бАржа|баржА","бАрмен|бармЕн","зУбчатый|зубчАтый","мозаИчный|мозАичный","давнИшний|дАвнишний","ненадОлго|нЕнадолго","еретИк|ерЕтик","мутИт|мУтит","апострОф|апОстроф","осведомИться|осведОмиться","тОтчас|тотчАс","граждАнство|гражданствО","плесневЕть|плЕсневеть","предвосхитИть|предвосхИтить","кинзА|кИнза","ловкА|лОвка","налилА|налИла","вручАт|врУчат","прожИвший|прОживший","украИнский|укрАинский","предпринЯл|предпрИнял","оклЕить|оклеИть","опОшлить|опошлИть","фОрзац|форзАц","деньгАми|дЕньгами","зАсветло|засвЕтло","включИшь|вклЮчишь","избалОванный|избАлованный","начАвшийся|нАчавшийся"]);
+quiz('qt',()=>{const[r,w]=gT().split('|'),o=shuffle([r,w]);return{q:'<span style="font-size:24px">Где ударение поставлено правильно?</span>',opts:o.map(st),a:o.indexOf(r),fb:g=>(g?'Верно! ':'Запомни: ')+st(r)}}); 
+const gC=bag(['Старый ___ стоит на высокой горе.|зАмок|замОк|зАмок — большой дом, замОк — запирает дверь.','Дверной ___ сломался, ключ не поворачивается.|замОк|зАмок|замОк запирает дверь.','Для блинов нужна ___.|мукА|мУка|мукА — для выпечки, мУка — боль.','Я ___ за покупку на кассе.|плачУ|плАчу|плачУ — отдаю деньги, плАчу — роняю слёзы.','Дети разглядывали ___ с картой мира.|Атлас|атлАс|Атлас — сборник карт, атлАс — ткань.','Платье сшито из блестящего ___.|атлАса|Атласа|атлАс — ткань, Атлас — сборник карт.','Малыш поднял ___ вверх.|рУки|рукИ|рУки — много рук, рукИ — одной руки.','У куклы нет одной ___.|рукИ|рУки|рукИ — одной руки (единственное число).']);
+quiz('qc',()=>{const[s,r,w,e]=gC().split('|'),o=shuffle([r,w]);return{q:'<span style="font-size:24px">'+s+'</span>',opts:o.map(st),a:o.indexOf(r),fb:g=>(g?'Верно! ':'Подумай про смысл. ')+e}});
+(function(){const W=['Ты','сегодня','дежурный?'],T=['Спрашиваем про тебя: не про другого человека.','Спрашиваем про сегодня: не про вчера и не про завтра.','Спрашиваем про дежурство: именно дежурный, а не просто пришёл.'],box=$('lgs');
+ W.forEach((w,i)=>{const b=document.createElement('button');b.className='alt opt';b.textContent=w;b.style.margin='4px';
+  b.onclick=()=>{[...box.children].forEach(x=>{x.style.background='';x.style.color=''});b.style.background='var(--azure)';b.style.color='#fff';$('lgm').textContent=T[i]};box.appendChild(b)})})();
+
+function tap(id,sets){
+ const r=$(id),w=r.querySelector('.w'),m=r.querySelector('.msg'),sc=r.querySelector('.score:last-child'),sb=r.querySelector('.sets');
+ let cur,done,ok=0,n=0,gen;
+ function pick(name){gen=bag(sets[name]);ok=0;n=0;[...sb.children].forEach(b=>b.classList.toggle('on',b.textContent===name));next()}
+ function next(){const[x,p]=gen();cur=p;done=false;n++;m.textContent='';m.className='msg';sc.textContent='Верно: '+ok+' из '+(n-1);
+  w.innerHTML=[...x].map((c,k)=>V.includes(c)?"<span class='l vv' data-k='"+k+"' tabindex='0' role='button'>"+c+"</span>":"<span class='l'>"+c+"</span>").join('');
+  w.querySelectorAll('.vv').forEach(s=>{const go=()=>{if(done)return;if(+s.dataset.k===cur){done=true;ok++;s.classList.add('good');s.textContent+='\u0301';m.textContent='Верно!';m.className='msg ok';sc.textContent='Верно: '+ok+' из '+n}else{s.classList.add('no');m.textContent='Не эта. Скажи слово громко, как будто зовёшь.';m.className='msg bad'}};s.onclick=go;s.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}}})}
+ Object.keys(sets).forEach(k=>{const b=document.createElement('button');b.className='alt';b.textContent=k;b.onclick=()=>pick(k);sb.appendChild(b)});
+ r.querySelector('.nx').onclick=()=>next();pick(Object.keys(sets)[0]);
+}
+tap('tp',{
+ 'Набор 1':[['кварталы',5],['шофёр',3],['инженеры',5],['адреса',5],['принял',2],['щавель',3],['повторит',6]],
+ 'Набор 2':[['алфавит',5],['арбуза',3],['диалог',4],['дикторов',1],['понял',1],['создала',6],['сильна',5],['значимого',2]],
+ 'Набор 3':[['диалог',4],['значимый',2],['клала',2],['положить',5],['щавель',3]],
+ 'Набор 4':[['кухонный',1],['красивее',4],['торты',1],['принять',4],['начать',3],['звонит',4],['повторит',6]],
+ 'Набор 5':[['орфоэпия',4],['начать',3],['шедевр',3],['портфель',5],['алфавит',5],['расположить',8],['дефис',3],['кухонный',1],['гантель',4]]});
+tap('tp2',{
+ 'Дополнительно':[['осень',0],['телята',3],['апельсин',6],['лошадь',1],['мёд',1],['волк',1],['облако',0]],
+ 'Односложные сущ.':[['торты',1],['банты',1],['шарфы',1],['краны',2],['склады',3],['лифты',1],['шприцы',3],['воры',1],['волки',1],['шахты',1],['порты',1],['сроки',2],['иксы',0],['гербы',4],['зонты',4]],
+ 'Глаголы':[['начала',5],['приняла',6],['взяла',4],['ждала',4],['спала',4],['звала',4],['клала',2],['кралась',2],['послала',4],['звонит',4],['включит',5],['сорит',3],['щемит',3],['одолжит',5],['кружит',4],['кичится',3],['сверлит',5],['убыстрит',6],['углубит',5],['ободрит',5],['наделит',5],['кровоточит',8],['облегчить',6],['углубить',5],['кашлянуть',1],['перчить',1],['откупорить',3],['закупорить',3],['принудить',4],['исчерпать',3],['баловать',5],['премировать',8],['сортировать',8],['формировать',8],['дозировать',3]],
+ 'Сущ. 1':[['кулинария',5],['гастрономия',7],['логопедия',5],['патриархия',5],['металлургия',6],['демократия',6],['наркомания',6],['буржуазия',7],['диоптрия',6],['гемофилия',7],['асимметрия',8],['истерия',5],['индустрия',7],['терапия',5],['намерение',3],['обеспечение',5],['вероисповедание',9],['мусоропровод',10],['водопровод',8],['нефтепровод',9],['газопровод',8],['электропровод',9],['монолог',5],['эпилог',4],['диалог',4],['некролог',6],['филолог',3],['психолог',4],['социолог',4],['физиолог',4],['местностей',1],['челюстей',1],['почестей',1],['новостей',6]],
+ 'Сущ. 2':[['дремота',4],['зевота',3],['мокрота',4],['сухота',3],['рвота',2],['сухота',5],['мокрота',6],['немота',5],['сирота',5],['сироты',3],['столяр',4],['квартал',5],['сериал',4],['финал',3],['пенал',3],['глашатай',4],['завсегдатай',7],['ходатай',3],['ходатайство',3],['щавель',3],['корысть',3],['ревень',3],['кремень',4],['недуг',3],['коклюш',4],['инсульт',3],['пихта',1],['хвоя',2],['досуг',3],['мещанин',5],['христианин',8],['кладовая',6],['ракушка',3],['толика',3],['арахис',2],['искра',0],['ломти',4],['гренки',5],['афиняне',2],['вавилоняне',5],['всенощная',2],['вечеря',1],['благовест',2],['послушник',1],['катарсис',1],['догмат',1],['знамение',2],['верба',1],['киноварь',1]],
+ 'Прил., прич., нареч.':[['глупа',4],['горька',5],['весела',5],['сильна',5],['бодра',4],['смела',4],['гибка',4],['грушевый',2],['сливовый',2],['щавелевый',3],['кухонный',1],['бочковый',1],['девичий',1],['подростковый',4],['оптовый',3],['кедровый',4],['оркестровый',7],['джинсовый',5],['красивый',4],['красивейший',4],['красивее',4],['прозорлива',7],['смазлива',5],['суетлива',5],['болтлива',5],['прожорлива',4],['включённый',5],['испечённый',5],['окружённый',5],['облегчённый',6],['углублённый',6],['новорождённый',8],['занята',5],['принята',6],['умерший',2],['нагнутый',1],['согнутый',1],['подогнутый',3],['разогнутый',3],['выгнутый',1],['перегнутый',3],['изогнутый',2],['начав',3],['приняв',4],['заняв',3],['начавший',3],['докрасна',7],['добела',5],['дочерна',6],['дотемна',6],['донизу',1],['доверху',1],['досыта',1],['донельзя',3],['загодя',1],['памятуя',1],['мельком',1],['завидно',3],['издревле',4],['втридешева',3],['мастерски',8]],
+ 'Практикум 1':[['долбит',4],['принята',6],['наделит',5],['клала',2],['взяла',4],['эксперт',4],['брала',4],['сливовый',2],['погнутый',1],['кинза',4],['щавель',3],['изогнутый',2],['просверлит',8],['красивее',4],['плодоносить',8],['звонит',4],['местностей',1],['кралась',2],['завидно',3],['включишь',5],['приняла',6],['избалованный',5],['банты',1],['шарфы',1],['баржа',1],['каучук',4],['красивейший',4],['занята',5],['начавшийся',3],['премировать',8],['задала',5],['закупорить',3],['начав',3],['кремень',4],['собрала',6],['облегчить',6],['дефис',3],['бармен',1]],
+ 'Практикум 2':[['обеспечение',5],['ходатайство',3],['алфавит',5],['квартал',5],['цемент',3],['вероисповедание',9],['принудить',4],['откупорить',3],['украинский',4],['каталог',5],['ракушка',3],['инсульт',3],['ободрит',5],['некролог',6],['жалюзи',5],['тотчас',1],['предпринял',8],['столяр',4],['джинсовый',5],['зубчатый',1],['аэропортов',5],['ворвалась',6],['намерение',3],['мастерски',8],['втридешева',3],['кухонный',1],['хвоя',2],['баловать',5],['форзац',1],['петля',1],['опошлить',2],['ловка',4],['издревле',4],['досверлит',7],['краны',2],['донизу',1],['налила',5],['гражданство',5]],
+ 'Практикум 3':[['донельзя',3],['вручат',4],['проживший',4],['металлургия',6],['мозаичный',4],['туфлю',1],['корысть',3],['досуг',3],['кладовая',6],['давнишний',4],['оптовый',3],['сироты',3],['ненадолго',5],['еретик',4],['торты',1],['доверху',1],['предвосхитить',10],['озлобить',3],['логопедия',5],['плесневеть',7],['кашлять',1],['перчить',1],['исчерпать',3],['склады',3],['шофёры',3],['мутит',3],['пихта',1],['подростковый',4],['дочерна',6],['засветло',1],['христианин',8],['принят',2],['новорождённый',8],['деньгами',5],['апостроф',6],['кровоточит',8],['оклеить',3],['осведомиться',7],['включённый',5],['осуждённый',5],['загодя',1],['гнала',4]]});
+const mk=l=>{const g=bag(l);return()=>{const[s,r,w,e]=g().split('|'),o=shuffle([r,w]);return{q:'<span style="font-size:24px">'+s+'</span>',opts:o.map(st),a:o.indexOf(r),fb:t=>(t?'Верно! ':'Подумай про смысл. ')+e}}};
+quiz('qx',mk(['В комнате четыре ___.|стЕны|стенЫ|стЕны — много стен, стенЫ — одной стены.','Диван стоит у ___.|стенЫ|стЕны|стенЫ — одна стена.','На ёлке колючие ___.|Иглы|иглЫ|Иглы — много игл, иглЫ — одной иглы.','Над морем поднялись большие ___.|вОлны|волнЫ|вОлны — много волн.','Ведро полно ___.|водЫ|вОды|водЫ — одной воды.','На стройке лежали длинные ___.|дОски|доскИ|дОски — много досок.','Мы приехали в большое ___.|сЕло|селО|сЕло — деревня, селО — «солнце село».','Солнце ___ за горизонт.|селО|сЕло|селО — глагол.','Мальчик идёт по ___ домой.|дорОгой|дорогОй|дорОгой — существительное.','Это мой ___ друг.|дорогОй|дОрогой|дорогОй — прилагательное.','На столе нет ни крошки ___.|мукИ|мУки|мукИ — для блинов.','Больной терпел страшные ___.|мУки|мукИ|мУки — страдания.','Мы осмотрели рыцарский ___.|зАмок|замОк|зАмок — большой дом, замОк — запирает дверь.','Огородное ___ стоит среди грядок.|пУгало|пугАло|пУгало — чучело, пугАло — «кого-то пугало».','Резкий ___ напугал птиц.|хлопОк|хлОпок|хлопОк — звук, хлОпок — растение.','Белый ___ растёт на полях.|хлОпок|хлопОк|хлОпок — растение.','Какое ___ лето!|жАркое|жаркОе|жАркое — горячее.','На ужин будет ___ из курицы.|жаркОе|жАркое|жаркОе — блюдо.','Путник остановился на краю ___.|прОпасти|пропАсти|прОпасть — обрыв.','Ключи не должны ___.|пропАсть|прОпасть|пропАсть — исчезнуть.']));
+(function(){const g=bag(['После твёрдых согласных одинаково звучат гласные, которые пишут буквами а и ...|о|у|е|Безударные [о] и [а] после твёрдых звучат почти одинаково.','После мягких согласных одинаково звучат гласные, которые пишут буквами я и ...|е|ю|ё|Безударные я и е после мягких звучат как [и].','На конце слова парные звонкие согласные произносятся как парные ...|глухие|звонкие|мягкие|дуб — [дуп].','Перед глухими согласными произносятся только парные ...|глухие|звонкие|мягкие|ложка — [лошка].']);
+ quiz('qn',()=>{const[s,r,a,b,e]=g().split('|'),o=shuffle([r,a,b]);return{q:'<span style="font-size:24px">'+s+'</span>',opts:o,a:o.indexOf(r),fb:t=>(t?'Верно! ':'Правильно: '+r+'. ')+e}})})();
+(function(){const C=['шн / шт','ударение','перед э мягкий','перед э твёрдый'],g=bag([['конечно',0],['скучно',0],['скворечница',0],['что',0],['алфавит',1],['документ',1],['досуг',1],['километр',1],['предмет',1],['магазин',1],['фанера',2],['рельс',2],['тема',2],['кашне',2],['модель',2],['фонетика',2],['теннис',3],['ателье',3],['шоссе',3]]);
+ quiz('qz',()=>{const[w,a]=g();return{q:w,opts:C,a,fb:t=>t?'Верно!':'Правильно: '+C[a]}})})();
+(function(){const V3='аоуыэяёюие',S=['сг','ссгс','сгс','сгсс','сгсг','сгсгсг'],box=$('sch');
+ const pat=w=>{w=w.toLowerCase().trim();let o='';for(let i=0;i<w.length;i++){const c=w[i];if('ьъ'.includes(c))continue;if('яюеё'.includes(c)){const p=w[i-1];o+=(!p||V3.includes(p)||'ьъ'.includes(p))?'сг':'г'}else o+=V3.includes(c)?'г':(/[а-яё]/.test(c)?'с':'')}return o};
+ S.forEach(s=>{const d=document.createElement('div');d.className='sch';d.innerHTML="<b>"+s+"</b><input placeholder='слово' aria-label='Слово для схемы "+s+"'><button class='alt'>Проверить</button><span class='msg' style='min-height:0'></span>";
+  const i=d.querySelector('input'),m=d.querySelector('.msg'),f=()=>{const p=pat(i.value);if(!p){return}const ok=p===s;m.textContent=ok?'Верно!':'У слова схема '+p;m.className='msg '+(ok?'ok':'bad')};
+  d.querySelector('button').onclick=f;i.onkeydown=e=>{if(e.key==='Enter')f()};box.appendChild(d)})})();
+(function(){const P=['С кем по грибки, с тем и по ягодки.','Весна красна цветами, а осень — снопами.','Гречневая каша — матушка наша, а хлебец ржаной — отец наш родной.','Где был, там нет, а где шёл — тут след.'],box=$('prv');
+ P.forEach(t=>{const d=document.createElement('p');t.split(' ').forEach(w=>{const c=document.createElement('span');c.className='chip';c.textContent=w;c.onclick=()=>c.classList.toggle('on');d.appendChild(c)});box.appendChild(d)})})();
+(function(){const i=$('wp'),o=$('wv'),f=()=>{const v=Math.max(0,Math.min(90,+i.value||0));o.textContent=v>=81?'Отлично':v>=66?'Хорошо':v>=45?'Удовлетворительно':'Нужен повтор темы'};i.oninput=f;f()})();
+/* calc */
+let e=0;
+function g(){$("errs").textContent=e;$("gr").textContent=e===0?"5":e<=2?"4":e<=5?"3":"2"}
+$("plus").onclick=()=>{e++;g()};$("minus").onclick=()=>{e=Math.max(0,e-1);g()};
+</script>
+</body>
+</html>
